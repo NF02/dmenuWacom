@@ -1,0 +1,85 @@
+#!/bin/env zsh
+# author: Nicola Ferru
+PAD=`xsetwacom --list devices | awk '/PAD/||/pad/||/Pad/' | awk -F "id:" '{print $1}' | cut -d " " -f1-8  | sed -e 's/[[:space:]]*$//'`
+
+if [[ $1 == --version ]] || [[ $1 == -v ]] || [[ $1 == -VERSION ]]; then
+	cat << 'EOF'
+DMWacom 0.1 beta
+EOF
+	exit 0
+fi
+
+if [[ $PAD == "" ]]; then
+	notify-send "💀 pad not found"
+	exit 1
+fi
+
+Applications_profiles() {
+	app="Krita\nGimp\nInkscape\n"
+	launcher_app=$(echo -e "$app" | dmenu -i -p "Applications profiles: ")
+	case $launcher_app in
+		"Krita") 
+			xsetwacom set "$PAD" Button 1 key b &&
+			xsetwacom set "$PAD" Button 2 key f &&
+			xsetwacom set "$PAD" Button 3 key +ctrl t -ctrl &&
+			xsetwacom set "$PAD" Button 8 key +ctrl z -ctrl &&
+			krita & notify-send " $launcher_app app. profile"
+		;;
+		"Gimp")
+			xsetwacom set "$PAD" Button 1 key p &&
+			xsetwacom set "$PAD" Button 2 key r &&
+			xsetwacom set "$PAD" Button 3 key +shift e -shift &&
+			xsetwacom set "$PAD" Button 8 key +ctrl z -ctrl &&
+			gimp & notify-send " $launcher_app app. profile"
+			;;
+		"Inkscape") 
+			xsetwacom set "$PAD" Button 1 key b &&
+			xsetwacom set "$PAD" Button 2 key +shift e -shift &&
+			xsetwacom set "$PAD" Button 3 key c &&
+			xsetwacom set "$PAD" Button 8 key +ctrl z -ctrl &&
+			inkscape & notify-send " $launcher_app app. profile"
+			;;
+		#"test") notify-send "test";;
+	esac 
+}
+
+Button_setting() {
+	nbut=`xsetwacom -s get "$PAD" all | grep "Button" | wc -l`
+	
+	for number in {1..$nbut}
+	do
+		echo "$number "
+		buttons+="$number\n"
+	done
+	#buttons="1\n2\n3\n4\n"
+	launcher_button=$(echo -e "$buttons" | dmenu -i -p "Button: ")
+	if [[ $PAD == "Wacom Intuos S Pad pad" ]] && [[ $launcher_button == "4" ]]; then
+		Button_set 8
+	else if [[ $launcher_button < $nbut ]]; then
+			Button_set $launcher_button
+		fi
+	fi
+
+}
+
+Button_set(){
+	launcher_but=$(echo -e "" | dmenu -i -p "Function $1: ")
+	xsetwacom set "$PAD" Button $1 key $launcher_but
+}
+
+Info_tablet(){
+	notify-send " $PAD"
+
+}
+
+# launcher
+wacom="Button setting\nApplications profiles\nInfo\nManual\n"
+launcher_wacom=$(echo -e "$wacom" | dmenu -i -p "dmenuWacom")
+[[ "$launcher_wacom" = "" ]] && exit 1
+
+case $launcher_wacom in
+	"Button setting") Button_setting;;
+	"Applications profiles") Applications_profiles;;
+	"Info") Info_tablet;;
+	"Manual") st -e man dmenuWacom;;
+esac 
