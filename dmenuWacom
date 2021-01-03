@@ -1,5 +1,5 @@
 #!/bin/env zsh
-# author: Nicola Ferru
+# author: NFVblog
 PAD=`xsetwacom --list devices | awk '/PAD/||/pad/||/Pad/' | awk -F "id:" '{print $1}' | cut -d " " -f1-8  | sed -e 's/[[:space:]]*$//'`
 
 if [[ $1 == --version ]] || [[ $1 == -v ]] || [[ $1 == -VERSION ]]; then
