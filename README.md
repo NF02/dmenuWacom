@@ -8,4 +8,5 @@ There are ready-made profiles for some applications.
 `` sh
 sudo pacman -S git dunst && git clone https://github.com/NF02/dmenu && cd dmenu && make && sudo make install
 ``
+
 the dmenu that is used in this script is the one present in my repository
