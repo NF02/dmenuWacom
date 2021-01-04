@@ -5,7 +5,7 @@ There are ready-made profiles for some applications.
 
 ## Install dependencies
 
-`` sh
+`` 
 sudo pacman -S git dunst && git clone https://github.com/NF02/dmenu && cd dmenu && make && sudo make install
 ``
 
