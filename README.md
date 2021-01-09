@@ -18,6 +18,8 @@ git clone https://github.com/NF02/dmenu && cd dmenu && make && sudo make install
 
 The dmenu that is used in this script is the one present in <a href="https://github.com/NF02/dmenu">my repository</a>.
 
+For more information, consult the <a href="https://suckless.org/hacking/">hacking guidelines</a> on the <a href="https://suckless.org">suckless.org</a> official website
+
 # Warning: in the case of Emojis or special characters
 
 In case st has a crask or does not display the fonts, install the [libxft-bgra](https://aur.archlinux.org/packages/libxft-bgra/) present in the **AUR**.
