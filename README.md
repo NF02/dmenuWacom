@@ -4,10 +4,16 @@
 
 This **script** is used to remap the texts of **Wacom graphics tablets**. It is based on **ZSH** and is not compatible with bash without making changes. There are *ready-made profiles* for some applications.
 
-## Profile compatible devices
+## Profiles compatible devices
 - Wacom Intuos series
+```
+ -----------------  
+ | 1 | 2 | 3 | 8 |
+ -----------------
+```
 
 Community help will be needed to improve the program.
+
 ## Install dependencies
 
 ```bash
