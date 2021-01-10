@@ -19,10 +19,10 @@ Applications_profiles() {
 		notify-send "💀 pad not support"
 		exit 1
 	fi
-	app="Krita\nGimp\nInkscape\n"
+	app="Krita\nGimp\nInkscape\nOlive Video Editor\n"
 	launcher_app=$(echo -e "$app" | dmenu -i -p "Applications profiles: ")
 	case $launcher_app in
-		"Krita") 
+		"Krita")
 			xsetwacom set "$PAD" Button 1 key b &&
 			xsetwacom set "$PAD" Button 2 key f &&
 			xsetwacom set "$PAD" Button 3 key +ctrl t -ctrl &&
@@ -35,21 +35,28 @@ Applications_profiles() {
 			xsetwacom set "$PAD" Button 3 key +shift e -shift &&
 			xsetwacom set "$PAD" Button 8 key +ctrl z -ctrl &&
 			gimp & notify-send " $launcher_app app. profile"
-			;;
-		"Inkscape") 
+		;;
+		"Inkscape")
 			xsetwacom set "$PAD" Button 1 key b &&
 			xsetwacom set "$PAD" Button 2 key +shift e -shift &&
 			xsetwacom set "$PAD" Button 3 key c &&
 			xsetwacom set "$PAD" Button 8 key +ctrl z -ctrl &&
 			inkscape & notify-send " $launcher_app app. profile"
-			;;
+		;;
+		"Olive Video Editor")
+			xsetwacom set "$PAD" Button 1 key v &&
+			xsetwacom set "$PAD" Button 2 key x &&
+			xsetwacom set "$PAD" Button 3 key c &&
+			xsetwacom set "$PAD" Button 8 key h &&
+		 	olive-editor & notify-send " $launcher_app app. profile"
+		;;
 		#"test") notify-send "test";;
-	esac 
+	esac
 }
 
 Button_setting() {
 	nbut=`xsetwacom -s get "$PAD" all | grep "Button" | wc -l`
-	
+
 	for number in {1..$nbut}
 	do
 		echo "$number "
@@ -89,4 +96,4 @@ case $launcher_wacom in
 	"Applications profiles") Applications_profiles;;
 	"Info") Info_tablet;;
 	"Manual") st -e man dmenuWacom;;
-esac 
+esac
