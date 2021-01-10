@@ -4,6 +4,9 @@
 
 This **script** is used to remap the texts of **Wacom graphics tablets**. It is based on **ZSH** and is not compatible with bash without making changes. There are *ready-made profiles* for some applications.
 
+## Profile compatible devices
+- Wacom Intuos series
+
 ## Install dependencies
 
 ```bash
@@ -18,7 +21,7 @@ git clone https://github.com/NF02/dmenu && cd dmenu && make && sudo make install
 
 The dmenu that is used in this script is the one present in <a href="https://github.com/NF02/dmenu">my repository</a>.
 
-For more information, consult the <a href="https://suckless.org/hacking/">hacking guidelines</a> on the <a href="https://suckless.org">suckless.org</a> official website
+For more information, consult the [hacking guidelines](https://suckless.org/hacking/) on the <a href="https://suckless.org">suckless.org</a> official website
 
 # Warning: in the case of Emojis or special characters
 
