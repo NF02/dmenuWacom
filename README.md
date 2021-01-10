@@ -7,6 +7,7 @@ This **script** is used to remap the texts of **Wacom graphics tablets**. It is 
 ## Profile compatible devices
 - Wacom Intuos series
 
+Community help will be needed to improve the program.
 ## Install dependencies
 
 ```bash
