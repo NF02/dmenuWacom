@@ -4,7 +4,7 @@ PAD=`xsetwacom --list devices | awk '/PAD/||/pad/||/Pad/' | awk -F "id:" '{print
 
 if [[ $1 == --version ]] || [[ $1 == -v ]] || [[ $1 == -VERSION ]]; then
 	cat << 'EOF'
-DMWacom 0.1 beta
+DMWacom 0.2 beta
 EOF
 	exit 0
 fi
