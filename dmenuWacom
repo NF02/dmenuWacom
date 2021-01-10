@@ -15,7 +15,7 @@ if [[ $PAD == "" ]]; then
 fi
 
 Applications_profiles() {
-	if [[ $PAD != "Wacom Intuos S Pad pad" ]] || [[ $PAD != "Wacom Intuos M Pad pad" ]];then
+	if [[ $PAD != "Wacom Intuos S Pad pad" ]] || [[ $PAD != "Wacom Intuos M Pad pad" ]] || [[ $PAD == "TABLET Pen Tablet Pad pad" ]];then
 		notify-send "💀 pad not support"
 		exit 1
 	fi
@@ -50,6 +50,7 @@ Applications_profiles() {
 			xsetwacom set "$PAD" Button 8 key h &&
 		 	olive-editor & notify-send " $launcher_app app. profile"
 		;;
+
 		#"test") notify-send "test";;
 	esac
 }
@@ -64,8 +65,9 @@ Button_setting() {
 	done
 	#buttons="1\n2\n3\n4\n"
 	launcher_button=$(echo -e "$buttons" | dmenu -i -p "Button: ")
-	if [[ $PAD == "Wacom Intuos S Pad pad" ]] || [[ $PAD == "Wacom Intuos M Pad pad" ]] && [[ $launcher_button == "4" ]]; then
-		Button_set 8
+	if [[ $launcher_button > "3" ]]; then
+		launcher_button=$(echo "$launcher_button+4" | bc)
+		Button_set $launcher_button
 	else if [[ $launcher_button < $nbut ]]; then
 			Button_set $launcher_button
 		fi
@@ -74,8 +76,9 @@ Button_setting() {
 }
 
 Button_set(){
-	if [[ $PAD == "Wacom Intuos S Pad pad" ]] || [[ $PAD == "Wacom Intuos M Pad pad" ]] && [[ $1 == "8" ]]; then
-		launcher_but=$(echo -e "" | dmenu -i -p "Function 4: ")
+	if [[ $1 > "7" ]]; then
+		nbut=$(echo "$1-4" | bc)
+		launcher_but=$(echo -e "" | dmenu -i -p "Function $nbut: ")
 	else launcher_but=$(echo -e "" | dmenu -i -p "Function $1: ")
 	fi
 	xsetwacom set "$PAD" Button $1 key $launcher_but
