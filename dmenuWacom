@@ -51,7 +51,6 @@ Applications_profiles() {
 		 	olive-editor & notify-send " $launcher_app app. profile"
 		;;
 
-		#"test") notify-send "test";;
 	esac
 }
 
@@ -60,7 +59,7 @@ Button_setting() {
 
 	for number in {1..$nbut}
 	do
-		echo "$number "
+		#echo "$number "
 		buttons+="$number\n"
 	done
 	#buttons="1\n2\n3\n4\n"
