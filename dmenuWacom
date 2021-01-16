@@ -15,7 +15,7 @@ if [[ $PAD == "" ]]; then
 fi
 
 Applications_profiles() {
-	if [[ $PAD != "Wacom Intuos S Pad pad" ]] || [[ $PAD != "Wacom Intuos M Pad pad" ]] || [[ $PAD == "TABLET Pen Tablet Pad pad" ]];then
+	if [[ $PAD != "Wacom Intuos S Pad pad" ]] && [[ $PAD != "Wacom Intuos M Pad pad" ]] && [[ $PAD != "TABLET Pen Tablet Pad pad" ]];then
 		notify-send "💀 pad not support"
 		exit 1
 	fi
