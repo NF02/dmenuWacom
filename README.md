@@ -16,13 +16,13 @@ Community help will be needed to improve the program.
 
 ## Install dependencies
 
-```bash
+```sh
 sudo pacman -S git dunst
 ```
 
 ### Install dmenu
 
-```bash
+```sh
 git clone https://github.com/NF02/dmenu && cd dmenu && make && sudo make install
 ```
 
