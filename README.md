@@ -17,7 +17,7 @@ Community help will be needed to improve the program.
 ## Install dependencies
 
 ```sh
-sudo pacman -S git dunst
+sudo pacman -S git dunst xf86-input-wacom
 ```
 
 ### Install dmenu
