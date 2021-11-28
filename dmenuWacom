@@ -99,3 +99,4 @@ case $launcher_wacom in
 	"Info") Info_tablet;;
 	"Manual") st -e man dmenuWacom;;
 esac
+
