@@ -15,14 +15,14 @@ if [[ $PAD == "" ]]; then
 	exit 1
 fi
 
+
 ScreenLocking(){
 	app="DVI-D-0\nHDMI-A-2\n"
 	launcher_app=$(echo -e "$app" | dmenu -i -p "Select dislay: ")
-	case $launcher_app in
-		"HDMI-A-2") xinput map-to-output "$STYLUS" HDMI-A-2;;
-		"DVI-D-0")  xinput map-to-output "$STYLUS" DVI-D-0;;
-	esac
+	xinput map-to-output "$STYLUS" $launcher_app
 }
+
+
 Applications_profiles() {
 	if [[ $PAD != "Wacom Intuos S Pad pad" ]] && [[ $PAD != "Wacom Intuos M Pad pad" ]] && [[ $PAD != "TABLET Pen Tablet Pad pad" ]];then
 		notify-send "💀 pad not support"
