@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=DMWacom
+Comment=This script is used to remap the texts of Wacom graphics tablets. It is based on zsh and is not compatible with bash without making changes. There are ready-made profiles for some applications. 
+Exec=/usr/local/bin/dmwacom
+Icon=wacom
+Terminal=false
+Type=Application
+Categories=Settings, Graphics;
+
