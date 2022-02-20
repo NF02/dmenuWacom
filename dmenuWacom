@@ -13,6 +13,8 @@ if [[ $PAD == "" ]]; then
 	notify-send "💀 pad not found"
 	exit 1
 fi
+
+# Warning: this function is very sketchy and is not yet definitive, it works exclusively on the Wacom Intos S, in future releases it will be extracted in order to make it work on all models supported by the driver
 ScreenLocking(){
 	if [[ $PAD != "Wacom Intuos S Pad pad" ]] && [[ $PAD != "Wacom Intuos M Pad pad" ]];then
 		notify-send "💀 pad not support"
@@ -70,10 +72,8 @@ Button_setting() {
 
 	for number in {1..$nbut}
 	do
-		#echo "$number "
 		buttons+="$number\n"
 	done
-	#buttons="1\n2\n3\n4\n"
 	launcher_button=$(echo -e "$buttons" | dmenu -i -p "Button: ")
 	if [[ $launcher_button > "3" ]]; then
 		launcher_button=$(echo "$launcher_button+4" | bc)
