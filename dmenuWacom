@@ -13,7 +13,18 @@ if [[ $PAD == "" ]]; then
 	notify-send "💀 pad not found"
 	exit 1
 fi
-
+ScreenLocking(){
+	if [[ $PAD != "Wacom Intuos S Pad pad" ]] && [[ $PAD != "Wacom Intuos M Pad pad" ]];then
+		notify-send "💀 pad not support"
+		exit 1
+	fi
+	app="DVI-D-0\nHDMI-A-2\n"
+	launcher_app=$(echo -e "$app" | dmenu -i -p "Select dislay: ")
+	case $launcher_app in
+		"HDMI-A-2") xinput map-to-output 'Wacom Intuos S Pen stylus' HDMI-A-2;;
+		"DVI-D-0")  xinput map-to-output 'Wacom Intuos S Pen stylus' DVI-D-0;;
+	esac
+}
 Applications_profiles() {
 	if [[ $PAD != "Wacom Intuos S Pad pad" ]] && [[ $PAD != "Wacom Intuos M Pad pad" ]] && [[ $PAD != "TABLET Pen Tablet Pad pad" ]];then
 		notify-send "💀 pad not support"
@@ -89,13 +100,14 @@ Info_tablet(){
 }
 
 # launcher
-wacom="Button setting\nApplications profiles\nInfo\nManual\n"
+wacom="Button setting\nApplications profiles\nScreen Locking\nInfo\nManual\n"
 launcher_wacom=$(echo -e "$wacom" | dmenu -i -p "dmenuWacom")
 [[ "$launcher_wacom" = "" ]] && exit 1
 
 case $launcher_wacom in
 	"Button setting") Button_setting;;
 	"Applications profiles") Applications_profiles;;
+	"Screen Locking") ScreenLocking;;
 	"Info") Info_tablet;;
 	"Manual") st -e man dmenuWacom;;
 esac
