@@ -1,6 +1,7 @@
 #!/bin/env zsh
 # author: NFVblog
 PAD=`xsetwacom --list devices | awk '/PAD/||/pad/||/Pad/' | awk -F "id:" '{print $1}' | cut -d " " -f1-8  | sed -e 's/[[:space:]]*$//'`
+STYLUS=`xsetwacom --list devices | awk '/STYLUS/||/stylus/||/Stylus/' | awk -F "id:" '{print $1}' | cut -d " " -f1-8  | sed -e 's/[[:space:]]*$//'`
 
 if [[ $1 == --version ]] || [[ $1 == -v ]] || [[ $1 == -VERSION ]]; then
 	cat << 'EOF'
@@ -14,17 +15,12 @@ if [[ $PAD == "" ]]; then
 	exit 1
 fi
 
-# Warning: this function is very sketchy and is not yet definitive, it works exclusively on the Wacom Intos S, in future releases it will be extracted in order to make it work on all models supported by the driver
 ScreenLocking(){
-	if [[ $PAD != "Wacom Intuos S Pad pad" ]] && [[ $PAD != "Wacom Intuos M Pad pad" ]];then
-		notify-send "💀 pad not support"
-		exit 1
-	fi
 	app="DVI-D-0\nHDMI-A-2\n"
 	launcher_app=$(echo -e "$app" | dmenu -i -p "Select dislay: ")
 	case $launcher_app in
-		"HDMI-A-2") xinput map-to-output 'Wacom Intuos S Pen stylus' HDMI-A-2;;
-		"DVI-D-0")  xinput map-to-output 'Wacom Intuos S Pen stylus' DVI-D-0;;
+		"HDMI-A-2") xinput map-to-output "$STYLUS" HDMI-A-2;;
+		"DVI-D-0")  xinput map-to-output "$STYLUS" DVI-D-0;;
 	esac
 }
 Applications_profiles() {
