@@ -25,6 +25,7 @@ sudo pacman -S git dunst xf86-input-wacom
 ```sh
 git clone https://github.com/NF02/dmenu && cd dmenu && make && sudo make install
 ```
+**Warning**: dunst is not a mandatory package, for the simple fact that if you already have a notification manager it will be totally useless.
 
 The dmenu that is used in this script is the one present in <a href="https://github.com/NF02/dmenu">my repository</a>.
 
