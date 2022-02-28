@@ -38,6 +38,13 @@ if ! command_exists zsh; then
     exit 1
 fi
 
+if ! command_exists dmenu; then
+    echo "${YELLOW}Dmenu is not installed.${RESET} Please install zsh first."
+    exit 2
+fi
+
+
+
 if [[ $1 == --version ]] || [[ $1 == -v ]] || [[ $1 == -VERSION ]]; then
 	cat << 'EOF'
 DMWacom 0.2 beta Intaller
@@ -81,7 +88,13 @@ if [[ $1 == --user ]] || [[ $1 == -usr ]]; then
 	exit 0
 fi
 if [[ $1 == --global ]] || [[ $1 == -gbl ]]; then
-	sudo cp dmenuWacom /usr/local/bin/ && sudo cp dmenuWacom.1\
+	sudo install -Dm644 dmenuWacom /usr/local/bin/ && sudo install -Dm644 dmenuWacom.1\
 		/usr/local/man/man1 && notify-send "Installation successful!"
 	exit 0
 fi
+if [[ $1 == --remove_user ]]; then
+	rm -rf ~/.local/bin/dmwacom && notify-send\
+	"successful!"
+	exit 0
+fi
+
