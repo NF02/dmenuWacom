@@ -34,3 +34,5 @@ For more information, consult the [hacking guidelines](https://suckless.org/hack
 # Warning: in the case of Emojis or special characters
 
 In case st has a crask or does not display the fonts, install the [libxft-bgra](https://aur.archlinux.org/packages/libxft-bgra/) present in the **AUR**.
+# Do you want to support my project?
+<script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Support Me on Ko-fi', '#29abe0', 'A0A3CDMP9');kofiwidget2.draw();</script> 
