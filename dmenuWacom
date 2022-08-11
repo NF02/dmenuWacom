@@ -1,9 +1,11 @@
 #!/bin/env zsh
-# author: NFVblog
+# author: NFVblog aka Nicola Ferru <ask dot nfvblog at outlook dot it>
 
 PAD=`xsetwacom --list devices | awk '/PAD/||/pad/||/Pad/' | awk -F "id:" '{print $1}' | cut -d " " -f1-8  | sed -e 's/[[:space:]]*$//'`
+
 STYLUS=`xsetwacom --list devices | awk '/STYLUS/||/stylus/||/Stylus/' | awk -F "id:" '{print $1}' | cut -d " " -f1-8  | sed -e 's/[[:space:]]*$//'`
 
+MONITORS=`xrandr --listmonitors | awk '{print $2}' | grep - | sed 's/+//' | sed 's/*//'`
 
 if [[ $1 == --version ]] || [[ $1 == -v ]] || [[ $1 == -VERSION ]]; then
 	cat << 'EOF'
@@ -26,8 +28,7 @@ fi
 
 
 ScreenLocking(){
-	display="DVI-D-0\nHDMI-A-2\n"
-	launcher_app=$(echo -e "$display" | dmenu -i -p "Select dislay: ")
+	launcher_app=$(echo -e "$MONITORS" | dmenu -i -p "Select dislay: ")
 	xinput map-to-output "$STYLUS" $launcher_app
 }
 
