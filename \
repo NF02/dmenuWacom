@@ -126,7 +126,7 @@ Info_tablet(){
 }
 
 # launcher
-wacom="Button setting\nApplications profiles\nScreen Locking\nRotate Pad\nInfo\nManual\n"
+wacom="Button setting\nApplications profiles\nScreen Locking\nInfo\nManual\n"
 launcher_wacom=$(echo -e "$wacom" | dmenu -i -p "dmenuWacom")
 [[ "$launcher_wacom" = "" ]] && exit 1
 
