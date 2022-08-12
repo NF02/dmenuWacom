@@ -33,7 +33,7 @@ For more information, consult the [hacking guidelines](https://suckless.org/hack
 
 # Warning: in the case of Emojis or special characters
 
-In case st has a crask or does not display the fonts, install the [libxft-bgra](https://aur.archlinux.org/packages/libxft-bgra/) present in the **AUR**.
+In case st has a crash or does not display the fonts, install the [libxft-bgra](https://aur.archlinux.org/packages/libxft-bgra/) present in the **AUR**.
 # Do you want to support my project?
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/A0A3CDMP9)
