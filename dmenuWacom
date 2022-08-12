@@ -28,7 +28,7 @@ fi
 
 
 ScreenLocking(){
-	launcher_app=$(echo -e "$MONITORS" | dmenu -i -p Applicationslay: ")
+	launcher_app=$(echo -e "$MONITORS" | dmenu -i -p "Select display: ")
 	xinput map-to-output "$STYLUS" $launcher_app
 }
 
