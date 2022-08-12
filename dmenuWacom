@@ -17,7 +17,7 @@ EOF
 fi
 
 if [[ $PAD == "" ]]; then
-	notify-send "💀 pad not found"
+	notify-send "💀 Pad not found"
 	exit 1
 fi
 
@@ -28,7 +28,7 @@ fi
 
 
 ScreenLocking(){
-	launcher_app=$(echo -e "$MONITORS" | dmenu -i -p "Select dislay: ")
+	launcher_app=$(echo -e "$MONITORS" | dmenu -i -p "Select display: ")
 	xinput map-to-output "$STYLUS" $launcher_app
 }
 
@@ -48,11 +48,11 @@ ScreenRotation(){
 
 Applications_profiles() {
 	if [[ $PAD != "Wacom Intuos S Pad pad" ]] && [[ $PAD != "Wacom Intuos M Pad pad" ]] && [[ $PAD != "TABLET Pen Tablet Pad pad" ]];then
-		notify-send "💀 pad not support"
+		notify-send "💀 Pad not supported"
 		exit 1
 	fi
 	app="Krita\nGimp\nInkscape\nOlive Video Editor\n"
-	launcher_app=$(echo -e "$app" | dmenu -i -p "Applications profiles: ")
+	launcher_app=$(echo -e "$app" | dmenu -i -p "Application profiles: ")
 	case $launcher_app in
 		"Krita")
 			xsetwacom set "$PAD" Button 1 key b &&
@@ -126,13 +126,13 @@ Info_tablet(){
 }
 
 # launcher
-wacom="Button setting\nApplications profiles\nScreen Locking\nRotate Pad\nInfo\nManual\n"
+wacom="Button setting\nApplication profiles\nScreen Locking\nRotate Pad\nInfo\nManual\n"
 launcher_wacom=$(echo -e "$wacom" | dmenu -i -p "dmenuWacom")
 [[ "$launcher_wacom" = "" ]] && exit 1
 
 case $launcher_wacom in
 	"Button setting") Button_setting;;
-	"Applications profiles") Applications_profiles;;
+	"Application profiles") Application_profiles;;
 	"Screen Locking") ScreenLocking;;
 	"Rotate Pad") ScreenRotation;;
 	"Info") Info_tablet;;
