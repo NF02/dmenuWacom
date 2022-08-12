@@ -17,7 +17,7 @@ EOF
 fi
 
 if [[ $PAD == "" ]]; then
-	notify-send "💀 pad not found"
+	notify-send "💀 Pad not found"
 	exit 1
 fi
 
