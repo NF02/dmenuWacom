@@ -46,7 +46,7 @@ ScreenRotation(){
 	esac
 }
 
-Applications_profiles() {
+Application_profiles() {
 	if [[ $PAD != "Wacom Intuos S Pad pad" ]] && [[ $PAD != "Wacom Intuos M Pad pad" ]] && [[ $PAD != "TABLET Pen Tablet Pad pad" ]];then
 		notify-send "💀 Pad not supported"
 		exit 1
