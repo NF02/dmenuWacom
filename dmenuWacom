@@ -104,7 +104,7 @@ Button_setting() {
 	fi
 
 	if [[ $launcher_button > "3" ]]; then
-	    launcher_button=$(echo "$launcher_button+$gap" | bc)
+	    launcher_button=$(($launcher_button+$gap))
 	    Button_set $launcher_button
 	elif [[ $launcher_button < $nbut ]]; then
     	    Button_set $launcher_button
@@ -115,7 +115,7 @@ Button_setting() {
 Button_set(){
 	tmp=`cat dmw_history`
 	if [[ $1 > $compensation ]]; then
-		nbut=$(echo "$1-$gap" | bc)
+		nbut=$(($1-$gap))
 		launcher_but=$(echo "" | dmenu -i -p "Function $nbut: ")
 	else
 		launcher_but=$(echo "$tmp\n" | dmenu -i -p "Function $1: ")
