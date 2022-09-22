@@ -7,6 +7,10 @@ STYLUS=`xsetwacom --list devices | awk '/STYLUS/||/stylus/||/Stylus/' | awk -F "
 
 MONITORS=`xrandr --listmonitors | awk '{print $2}' | grep - | sed 's/+//' | sed 's/*//'`
 
+# driver compensations
+compensation=7
+gap = 4
+
 if [[ $1 == --version ]] || [[ $1 == -v ]] || [[ $1 == -VERSION ]]; then
 	cat << 'EOF'
 ╺┳┓┏┳┓┏━╸┏┓╻╻ ╻╻ ╻┏━┓┏━╸┏━┓┏┳┓   ┏━┓ ┏━┓   ┏┓ ┏━╸╺┳╸┏━┓
@@ -28,13 +32,13 @@ fi
 
 
 ScreenLocking(){
-	launcher_app=$(echo -e "$MONITORS" | dmenu -i -p "Select display: ")
+	launcher_app=$(echo "$MONITORS" | dmenu -i -p "Select display: ")
 	xinput map-to-output "$STYLUS" $launcher_app
 }
 
 ScreenRotation(){
 	rotate="left\nright\nnormal"
-	launcher_app=$(echo -e "$rotate" | dmenu -i -p "Select the direction of rotation: ")
+	launcher_app=$(echo "$rotate" | dmenu -i -p "Select the direction of rotation: ")
 	case $launcher_app in
 		"left") 
 			xinput set-prop "$STYLUS" --type=float "Coordinate Transformation Matrix" 0 -1 1 1 0 0 0 0 1;;
@@ -52,7 +56,7 @@ Application_profiles() {
 		exit 1
 	fi
 	app="Krita\nGimp\nInkscape\nOlive Video Editor\n"
-	launcher_app=$(echo -e "$app" | dmenu -i -p "Application profiles: ")
+	launcher_app=$(echo "$app" | dmenu -i -p "Application profiles: ")
 	case $launcher_app in
 		"Krita")
 			xsetwacom set "$PAD" Button 1 key b &&
@@ -93,28 +97,28 @@ Button_setting() {
 	do
 		buttons+="$number\n"
 	done
-	launcher_button=$(echo -e "$buttons" | dmenu -i -p "Button: ")
-	if [[ $launcher_button -lt "0" ]] || [[ $launcher_button > $nbut ]];then
-		notify-send ""
+	launcher_button=$(echo "$buttons" | dmenu -i -p "Button: ")
+	if [[ $launcher_button < "0" ]] || [[ $launcher_button > $nbut ]];then
+		notify-send "the value is not included"
 		exit -1
 	fi
+
 	if [[ $launcher_button > "3" ]]; then
-		launcher_button=$(echo "$launcher_button+4" | bc)
-		Button_set $launcher_button
-	else if [[ $launcher_button < $nbut ]]; then
-			Button_set $launcher_button
-		fi
+	    launcher_button=$(echo "$launcher_button+$gap" | bc)
+	    Button_set $launcher_button
+	elif [[ $launcher_button < $nbut ]]; then
+    	    Button_set $launcher_button
 	fi
 
 }
 
 Button_set(){
 	tmp=`cat dmw_history`
-	if [[ $1 > "7" ]]; then
-		nbut=$(echo "$1-4" | bc)
-		launcher_but=$(echo -e "" | dmenu -i -p "Function $nbut: ")
+	if [[ $1 > $compensation ]]; then
+		nbut=$(echo "$1-$gap" | bc)
+		launcher_but=$(echo "" | dmenu -i -p "Function $nbut: ")
 	else
-		launcher_but=$(echo -e "$tmp\n" | dmenu -i -p "Function $1: ")
+		launcher_but=$(echo "$tmp\n" | dmenu -i -p "Function $1: ")
 	fi
 	xsetwacom set "$PAD" Button $1 key $launcher_but
 	echo "$launcher_but" >> dmw_history
@@ -127,7 +131,7 @@ Info_tablet(){
 
 # launcher
 wacom="Button setting\nApplication profiles\nScreen Locking\nRotate Pad\nInfo\nManual\n"
-launcher_wacom=$(echo -e "$wacom" | dmenu -i -p "dmenuWacom")
+launcher_wacom=$(echo "$wacom" | dmenu -i -p "dmenuWacom")
 [[ "$launcher_wacom" = "" ]] && exit 1
 
 case $launcher_wacom in
