@@ -1,11 +1,11 @@
 #!/bin/env zsh
 # author: NFVblog aka Nicola Ferru <ask dot nfvblog at outlook dot it>
 
-PAD=`xsetwacom --list devices | awk '/PAD/||/pad/||/Pad/' | awk -F "id:" '{print $1}' | cut -d " " -f1-8  | sed -e 's/[[:space:]]*$//'`
+PAD=$(xsetwacom --list devices | awk '/PAD/||/pad/||/Pad/' | awk -F "id:" '{print $1}' | cut -d " " -f1-8  | sed -e 's/[[:space:]]*$//')
 
-STYLUS=`xsetwacom --list devices | awk '/STYLUS/||/stylus/||/Stylus/' | awk -F "id:" '{print $1}' | cut -d " " -f1-8  | sed -e 's/[[:space:]]*$//'`
+STYLUS=$(xsetwacom --list devices | awk '/STYLUS/||/stylus/||/Stylus/' | awk -F "id:" '{print $1}' | cut -d " " -f1-8  | sed -e 's/[[:space:]]*$//')
 
-MONITORS=`xrandr --listmonitors | awk '{print $2}' | grep - | sed 's/+//' | sed 's/*//'`
+MONITORS=$(xrandr --listmonitors | awk '{print $2}' | grep - | sed 's/+//' | sed 's/*//')
 
 # driver compensations
 compensation=7
@@ -91,7 +91,7 @@ Application_profiles() {
 }
 
 Button_setting() {
-	nbut=`xsetwacom -s get "$PAD" all | grep "Button" | wc -l`
+	nbut=$(xsetwacom -s get "$PAD" all | grep "Button" | wc -l)
 
 	for number in {1..$nbut}
 	do
@@ -113,7 +113,7 @@ Button_setting() {
 }
 
 Button_set(){
-	tmp=`cat dmw_history`
+	tmp=$(cat dmw_history)
 	if [[ $1 > $compensation ]]; then
 		nbut=$(($1-$gap))
 		launcher_but=$(echo "" | dmenu -i -p "Function $nbut: ")
