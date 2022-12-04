@@ -55,10 +55,10 @@ Application_profiles() {
 		notify-send "💀 Pad not supported"
 		exit 1
 	fi
-	app=$(ls profiles)   
+	app=$(ls profiles | grep .dmwa | sed 's/.dmwa//')   
 	launcher_app=$(echo "$app" | dmenu -i -p "Application profiles: ")
 	echo $launcher_app
-	./profiles/$launcher_app "$PAD"
+	./profiles/$launcher_app.dmwa "$PAD"
 }
 
 Button_setting() {
