@@ -1,9 +1,9 @@
 #!/bin/env zsh
 PAD=$1
-button1="+ctrl n -ctrl"
-button2="f"
-button3="+ctrl t -ctrl"
-button4="+ctrl z -ctrl"
+button1="<++>"
+button2="<++>"
+button3="<++>"
+button4="<++>"
 
 xsetwacom set "$PAD" Button 1 key $button1 &&
 xsetwacom set "$PAD" Button 2 key $button2 &&
