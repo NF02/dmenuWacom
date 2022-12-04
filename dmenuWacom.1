@@ -1,9 +1,9 @@
-.TH DMWACOM 1 dmenuWacom\-VERSION
+.TH DMWACOM DMenuWacom\-0.4
 .SH NAME
 dmenuWacom \- DMenu xsetWacom
 .SH SYNOPSIS
 .B dmenuWacom
-.RB [ \-v ]
+.RB [ \-v ] [ \-h ]
 .SH DESCRIPTION
 dmenuWacom is a script that allows you to configure the wacom pad on X.org.
 DMWacom inside there are profiles for applications that I usually use, including
@@ -17,11 +17,31 @@ This script doesn't work with Wayland.
 .TP
 .B \-v
 prints version information to stderr, then exits.
+.P
+.TP
+.B \-h
+Print the help with all the instructions present.
 .SH USAGE
 .B Button setting \-
 allows you to set the keys of the pad.
 .P
 .B Application profiles \-
 allow you to make use of ready-made profiles for
-supported applications.
+supported applications. you can create new ones using the instructions
+in the empty.sh file.
+.P
+.B Screen Locking \-
+It allows you to fix the surface of the graphic tablet to a screen in a dynamic and
+practical way, this feature has been designed for those who use multi-monitor setups
+making everything practical.
+.P 
+.B Rotate Pad \-
+It allows you to rotate the surface of the tablet to be able to use it vertically.
+Unfortunately it only works well on single monitor setups
+.P
+.B Info \-
+Print the model and brand of the tablet
+.P
+.B Manual \-
+Opens the manual on a terminal, of course the $TERM flag must be set
 .P
