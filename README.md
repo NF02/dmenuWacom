@@ -54,6 +54,10 @@ xsetwacom set "$PAD" Button 2 key $button2 &&
 xsetwacom set "$PAD" Button 3 key $button3 &&
 xsetwacom set "$PAD" Button 8 key $button4
 ```
+
+Obviously this is the basic model but you can also insert other instructions that can be
+useful to make everything more practical
+
 # Warning: in the case of Emojis or special characters
 
 In case st has a crash or does not display the fonts, install the [libxft-bgra](https://aur.archlinux.org/packages/libxft-bgra/) present in the **AUR**.
