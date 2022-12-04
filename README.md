@@ -7,7 +7,7 @@ This **script** is used to remap the texts of **Wacom graphics tablets**. It is 
 ## Profiles compatible devices
 - Wacom Intuos series
 ```
- -----------------  
+ -----------------
  | 1 | 2 | 3 | 8 |
  -----------------
 ```
@@ -15,9 +15,15 @@ This **script** is used to remap the texts of **Wacom graphics tablets**. It is 
 Community help will be needed to improve the program.
 
 ## Install dependencies
+### Arch Linux
 
 ```sh
-sudo pacman -S git dunst xf86-input-wacom
+sudo pacman -S git dunst xf86-input-wacom xrandr
+```
+
+### Gentoo
+```sh
+sudo emerge -av dev-vsc/git xf86-input-wacom xrandr
 ```
 
 ### Install dmenu
@@ -30,7 +36,24 @@ git clone https://github.com/NF02/dmenu && cd dmenu && make && sudo make install
 The dmenu that is used in this script is the one present in <a href="https://github.com/NF02/dmenu">my repository</a>.
 
 For more information, consult the [hacking guidelines](https://suckless.org/hacking/) on the <a href="https://suckless.org">suckless.org</a> official website
+# Profile model
+It is a new feature and now it allows you to create profiles very quickly, obviously you
+have to use the `xsetwacom` syntax but it is certainly more practical than having to
+overwhelm the main script. Logically, the mode is apparently similar to the previous one
+but much better refined.
+```sh
+#!/bin/env zsh
+PAD=$1
+button1="<++>"
+button2="<++>"
+button3="<++>"
+button4="<++>"
 
+xsetwacom set "$PAD" Button 1 key $button1 &&
+xsetwacom set "$PAD" Button 2 key $button2 &&
+xsetwacom set "$PAD" Button 3 key $button3 &&
+xsetwacom set "$PAD" Button 8 key $button4
+```
 # Warning: in the case of Emojis or special characters
 
 In case st has a crash or does not display the fonts, install the [libxft-bgra](https://aur.archlinux.org/packages/libxft-bgra/) present in the **AUR**.

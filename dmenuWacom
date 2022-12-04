@@ -9,13 +9,13 @@ MONITORS=$(xrandr --listmonitors | awk '{print $2}' | grep - | sed 's/+//' | sed
 
 # driver compensations
 compensation=7
-gap = 4
+gap=4
 
 if [[ $1 == --version ]] || [[ $1 == -v ]] || [[ $1 == -VERSION ]]; then
 	cat << 'EOF'
-╺┳┓┏┳┓┏━╸┏┓╻╻ ╻╻ ╻┏━┓┏━╸┏━┓┏┳┓   ┏━┓ ┏━┓   ┏┓ ┏━╸╺┳╸┏━┓
- ┃┃┃┃┃┣╸ ┃┗┫┃ ┃┃╻┃┣━┫┃  ┃ ┃┃┃┃   ┃┃┃ ╺━┫   ┣┻┓┣╸  ┃ ┣━┫
-╺┻┛╹ ╹┗━╸╹ ╹┗━┛┗┻┛╹ ╹┗━╸┗━┛╹ ╹   ┗━┛╹┗━┛   ┗━┛┗━╸ ╹ ╹ ╹
+╺┳┓┏┳┓┏━╸┏┓╻╻ ╻╻ ╻┏━┓┏━╸┏━┓┏┳┓   ┏━┓ ╻ ╻   ┏┓ ┏━╸╺┳╸┏━┓
+ ┃┃┃┃┃┣╸ ┃┗┫┃ ┃┃╻┃┣━┫┃  ┃ ┃┃┃┃   ┃┃┃ ┗━┫   ┣┻┓┣╸  ┃ ┣━┫
+╺┻┛╹ ╹┗━╸╹ ╹┗━┛┗┻┛╹ ╹┗━╸┗━┛╹ ╹   ┗━┛╹  ╹   ┗━┛┗━╸ ╹ ╹ ╹
 EOF
 	exit 0
 fi
@@ -55,39 +55,10 @@ Application_profiles() {
 		notify-send "💀 Pad not supported"
 		exit 1
 	fi
-	app="Krita\nGimp\nInkscape\nOlive Video Editor\n"
+	app=$(ls profiles)   
 	launcher_app=$(echo "$app" | dmenu -i -p "Application profiles: ")
-	case $launcher_app in
-		"Krita")
-			xsetwacom set "$PAD" Button 1 key b &&
-			xsetwacom set "$PAD" Button 2 key f &&
-			xsetwacom set "$PAD" Button 3 key +ctrl t -ctrl &&
-			xsetwacom set "$PAD" Button 8 key +ctrl z -ctrl &&
-			krita & notify-send " $launcher_app app. profile"
-		;;
-		"Gimp")
-			xsetwacom set "$PAD" Button 1 key p &&
-			xsetwacom set "$PAD" Button 2 key r &&
-			xsetwacom set "$PAD" Button 3 key +shift e -shift &&
-			xsetwacom set "$PAD" Button 8 key +ctrl z -ctrl &&
-			gimp & notify-send " $launcher_app app. profile"
-		;;
-		"Inkscape")
-			xsetwacom set "$PAD" Button 1 key b &&
-			xsetwacom set "$PAD" Button 2 key +shift e -shift &&
-			xsetwacom set "$PAD" Button 3 key c &&
-			xsetwacom set "$PAD" Button 8 key +ctrl z -ctrl &&
-			inkscape & notify-send " $launcher_app app. profile"
-		;;
-		"Olive Video Editor")
-			xsetwacom set "$PAD" Button 1 key v &&
-			xsetwacom set "$PAD" Button 2 key x &&
-			xsetwacom set "$PAD" Button 3 key c &&
-			xsetwacom set "$PAD" Button 8 key h &&
-		 	olive-editor & notify-send " $launcher_app app. profile"
-		;;
-
-	esac
+	echo $launcher_app
+	./profiles/$launcher_app "$PAD"
 }
 
 Button_setting() {
