@@ -1,0 +1,11 @@
+#!/bin/env zsh
+PAD=$1
+button1="+control 1 -control"
+button2="+control 2 -control"
+button3="+control 4 -control"
+button4="+control z -control"
+
+xsetwacom set "$PAD" Button 1 key $button1 &&
+xsetwacom set "$PAD" Button 2 key $button2 &&
+xsetwacom set "$PAD" Button 3 key $button3 &&
+xsetwacom set "$PAD" Button 8 key $button4

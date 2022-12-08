@@ -1,10 +1,10 @@
-# dmenuWacom
+# dmenuWacom #
 
 <img src="dmenuWacom.png">
 
 This **script** is used to remap the texts of **Wacom graphics tablets**. It is based on **ZSH** and is not compatible with bash without making changes. There are *ready-made profiles* for some applications.
 
-## Profiles compatible devices
+## Profiles compatible devices ##
 - Wacom Intuos series
 ```
  -----------------
@@ -14,19 +14,19 @@ This **script** is used to remap the texts of **Wacom graphics tablets**. It is 
 
 Community help will be needed to improve the program.
 
-## Install dependencies
-### Arch Linux
+## Install dependencies ##
+### Arch Linux ###
 
 ```sh
 sudo pacman -S git dunst xf86-input-wacom xrandr
 ```
 
-### Gentoo
+### Gentoo ###
 ```sh
 sudo emerge -av dev-vsc/git xf86-input-wacom xrandr
 ```
 
-### Install dmenu
+### Install dmenu ###
 
 ```sh
 git clone https://github.com/NF02/dmenu && cd dmenu && make && sudo make install
@@ -36,7 +36,7 @@ git clone https://github.com/NF02/dmenu && cd dmenu && make && sudo make install
 The dmenu that is used in this script is the one present in <a href="https://github.com/NF02/dmenu">my repository</a>.
 
 For more information, consult the [hacking guidelines](https://suckless.org/hacking/) on the <a href="https://suckless.org">suckless.org</a> official website
-# Profile model
+# Profile model #
 It is a new feature and now it allows you to create profiles very quickly, obviously you
 have to use the `xsetwacom` syntax but it is certainly more practical than having to
 overwhelm the main script. Logically, the mode is apparently similar to the previous one
@@ -56,11 +56,15 @@ xsetwacom set "$PAD" Button 8 key $button4
 ```
 
 Obviously this is the basic model but you can also insert other instructions that can be
-useful to make everything more practical
+useful to make everything more practical.
 
-# Warning: in the case of Emojis or special characters
+The format used for the profile files is .dmwa (*dmenuwacom additions*), to indicate that
+they are external files and this is done to recognize them against other script files
+present in the directory.
+
+# Warning: in the case of Emojis or special characters #
 
 In case st has a crash or does not display the fonts, install the [libxft-bgra](https://aur.archlinux.org/packages/libxft-bgra/) present in the **AUR**.
-# Do you want to support my project?
+# Do you want to support my project? #
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/A0A3CDMP9)
