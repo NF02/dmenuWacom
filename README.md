@@ -23,7 +23,7 @@ sudo pacman -S git dunst xf86-input-wacom xrandr
 
 ### Gentoo ###
 ```sh
-sudo emerge -av dev-vsc/git xf86-input-wacom xrandr
+sudo emerge -av dev-vcs/git xf86-input-wacom xrandr
 ```
 
 ### Install dmenu ###
