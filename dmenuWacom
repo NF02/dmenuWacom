@@ -1,4 +1,8 @@
 #!/bin/env zsh
+# 			░█▀▄░█▄█░█░█░█▀█░█▀▀░█▀█░█▄█
+# 			░█░█░█░█░█▄█░█▀█░█░░░█░█░█░█
+# 			░▀▀░░▀░▀░▀░▀░▀░▀░▀▀▀░▀▀▀░▀░▀
+# --------------------------------------------------------------------
 # author: NFVblog aka Nicola Ferru <ask dot nfvblog at outlook dot it>
 
 PAD=$(xsetwacom --list devices | awk '/PAD/||/pad/||/Pad/' | awk -F "id:" '{print $1}' | cut -d " " -f1-8  | sed -e 's/[[:space:]]*$//')
