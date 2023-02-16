@@ -11,6 +11,8 @@ STYLUS=$(xsetwacom --list devices | awk '/STYLUS/||/stylus/||/Stylus/' | awk -F 
 
 MONITORS=$(xrandr --listmonitors | awk '{print $2}' | grep - | sed 's/+//' | sed 's/*//')
 
+PROFILE_DIR="./profiles"
+# PROFILE_DIR="/usr/local/bin/profiles" # for global install
 # driver compensations
 compensation=7
 gap=4
@@ -38,6 +40,7 @@ fi
 ScreenLocking(){
 	launcher_app=$(echo "$MONITORS" | dmenu -i -p "Select display: ")
 	xinput map-to-output "$STYLUS" $launcher_app
+	notify-send "lock in $launcher_app"
 }
 
 ScreenRotation(){
@@ -62,7 +65,7 @@ Application_profiles() {
 	app=$(ls profiles | grep .dmwa | sed 's/.dmwa//')   
 	launcher_app=$(echo "$app" | dmenu -i -p "Application profiles: ")
 	echo $launcher_app
-	./profiles/$launcher_app.dmwa "$PAD"
+	$PROFILE_DIR/$launcher_app.dmwa "$PAD"
 }
 
 Button_setting() {
