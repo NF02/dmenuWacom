@@ -41,7 +41,7 @@ if [[ $1 == --clear ]] || [[ $1 == -c ]] || [[ $1 == -CLEAR ]]; then
 	exit 0
 fi
 
-# Funzione per ruotare la tavoletta
+# Function to rotate the tablet
 rotate_tablet() {
     ROTATION=$(echo -e "normal\ninverted\nleft\nright" | wofi --dmenu --prompt "Select rotation:")
     case $ROTATION in
@@ -59,7 +59,7 @@ rotate_tablet() {
     fi
 }
 
-# Funzione per mappare la tavoletta a un monitor specifico
+# Function to map the tablet to a specific monitor
 map_to_monitor() {
     # Ottiene l'elenco dei monitor disponibili
     if [[ $WM == "hyprland" ]]; then
@@ -79,7 +79,7 @@ map_to_monitor() {
     fi
 }
 
-# Funzione per impostare la modalità della tavoletta
+# Function to set the tablet mode
 set_mode() {
     MODE=$(echo -e "absolute\nrelative" | wofi --dmenu --prompt "Select mode:")
     case $MODE in
@@ -95,7 +95,7 @@ set_mode() {
     fi
 }
 
-# Menu principale con Wofi
+# Main menu with Wofi
 main_menu() {
     CHOICE=$(echo -e "Rotate tablet\nMap to monitor\nSet mode" | wofi --dmenu --prompt "Select an action:")
     case $CHOICE in
@@ -106,5 +106,5 @@ main_menu() {
     esac
 }
 
-# Avvia il menu principale
+# Start the main menu
 main_menu
