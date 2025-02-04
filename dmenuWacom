@@ -1,27 +1,32 @@
-#!/bin/env zsh
+#!/bin/env sh
 # 			░█▀▄░█▄█░█░█░█▀█░█▀▀░█▀█░█▄█
 # 			░█░█░█░█░█▄█░█▀█░█░░░█░█░█░█
 # 			░▀▀░░▀░▀░▀░▀░▀░▀░▀▀▀░▀▀▀░▀░▀
 # --------------------------------------------------------------------
 # author: NFVblog aka Nicola Ferru <ask dot nfvblog at outlook dot it>
 
-PAD=$(xsetwacom --list devices | awk '/PAD/||/pad/||/Pad/' | awk -F "id:" '{print $1}' | cut -d " " -f1-8  | sed -e 's/[[:space:]]*$//')
+if ! command -v wofi &> /dev/null; then
+    echo "Errore: Wofi non è installato. Installalo con il tuo gestore di pacchetti."
+    exit 1
+fi
 
-STYLUS=$(xsetwacom --list devices | awk '/STYLUS/||/stylus/||/Stylus/' | awk -F "id:" '{print $1}' | cut -d " " -f1-8  | sed -e 's/[[:space:]]*$//')
+if [[ $XDG_CURRENT_DESKTOP == "Hyprland" ]]; then
+    WM="hyprland"
+elif [[ $XDG_CURRENT_DESKTOP == "sway" ]]; then
+    WM="sway"
+else
+    notify-send "Error: This script only supports Hyprland or Sway."
+    exit 1
+fi
 
-MONITORS=$(xrandr --listmonitors | awk '{print $2}' | grep - | sed 's/+//' | sed 's/*//')
+PAD=$(libinput list-devices | grep -i 'Tablet' | awk -F 'Device:' '{print $2}' | head -n 1 | xargs)
 
-PROFILE_DIR="./profiles"
-# PROFILE_DIR="/usr/local/bin/profiles" # for global install
-# driver compensations
-compensation=7
-gap=4
 
 if [[ $1 == --version ]] || [[ $1 == -v ]] || [[ $1 == -VERSION ]]; then
 	cat << 'EOF'
-╺┳┓┏┳┓┏━╸┏┓╻╻ ╻╻ ╻┏━┓┏━╸┏━┓┏┳┓   ┏━┓ ╻ ╻   ┏┓ ┏━╸╺┳╸┏━┓
- ┃┃┃┃┃┣╸ ┃┗┫┃ ┃┃╻┃┣━┫┃  ┃ ┃┃┃┃   ┃┃┃ ┗━┫   ┣┻┓┣╸  ┃ ┣━┫
-╺┻┛╹ ╹┗━╸╹ ╹┗━┛┗┻┛╹ ╹┗━╸┗━┛╹ ╹   ┗━┛╹  ╹   ┗━┛┗━╸ ╹ ╹ ╹
+╺┳┓┏┳┓╻ ╻┏━┓┏━╸┏━┓┏┳┓   ┏━┓ ┏━╸   ┏┓ ┏━╸╺┳╸┏━┓
+ ┃┃┃┃┃┃╻┃┣━┫┃  ┃ ┃┃┃┃   ┃┃┃ ┗━┓   ┣┻┓┣╸  ┃ ┣━┫
+╺┻┛╹ ╹┗┻┛╹ ╹┗━╸┗━┛╹ ╹   ┗━┛╹┗━┛   ┗━┛┗━╸ ╹ ╹ ╹
 EOF
 	exit 0
 fi
@@ -36,88 +41,70 @@ if [[ $1 == --clear ]] || [[ $1 == -c ]] || [[ $1 == -CLEAR ]]; then
 	exit 0
 fi
 
+# Funzione per ruotare la tavoletta
+rotate_tablet() {
+    ROTATION=$(echo -e "normal\ninverted\nleft\nright" | wofi --dmenu --prompt "Select rotation:")
+    case $ROTATION in
+        normal)   transform="0" ;;
+        inverted) transform="180" ;;
+        left)     transform="90" ;;
+        right)    transform="270" ;;
+        *) exit 1 ;;
+    esac
 
-ScreenLocking(){
-	launcher_app=$(echo "$MONITORS" | dmenu -i -p "Select display: ")
-	xinput map-to-output "$STYLUS" $launcher_app
-	notify-send "lock in $launcher_app"
+    if [[ $WM == "hyprland" ]]; then
+        hyprctl keyword device:${PAD},transform,${transform}
+    elif [[ $WM == "sway" ]]; then
+        swaymsg input "${PAD}" transform ${transform}
+    fi
 }
 
-ScreenRotation(){
-	rotate="left\nright\nnormal"
-	launcher_app=$(echo "$rotate" | dmenu -i -p "Select the direction of rotation: ")
-	case $launcher_app in
-		"left") 
-			xinput set-prop "$STYLUS" --type=float "Coordinate Transformation Matrix" 0 -1 1 1 0 0 0 0 1;;
-		"right")
-			xinput set-prop "$STYLUS" --type=float "Coordinate Transformation Matrix" 0 1 0 -1 0 1 0 0 1;;
-		"normal")
-			xinput set-prop "$STYLUS" --type=float "Coordinate Transformation Matrix" 0 0 0 0 0 0 0 0 0;;
+# Funzione per mappare la tavoletta a un monitor specifico
+map_to_monitor() {
+    # Ottiene l'elenco dei monitor disponibili
+    if [[ $WM == "hyprland" ]]; then
+        MONITORS=$(hyprctl monitors | grep "Monitor" | awk '{print $2}')
+    elif [[ $WM == "sway" ]]; then
+        MONITORS=$(swaymsg -t get_outputs | jq -r '.[].name')
+    fi
 
-	esac
+    # Seleziona il monitor tramite Wofi
+    MONITOR=$(echo -e "$MONITORS" | wofi --dmenu --prompt "Select monitor:")
+    if [ -z "$MONITOR" ]; then exit 1; fi
+
+    if [[ $WM == "hyprland" ]]; then
+        hyprctl keyword device:${PAD},mapto,${MONITOR}
+    elif [[ $WM == "sway" ]]; then
+        swaymsg input "${PAD}" map_to_output ${MONITOR}
+    fi
 }
 
-Application_profiles() {
-	if [[ $PAD != "Wacom Intuos S Pad pad" ]] && [[ $PAD != "Wacom Intuos M Pad pad" ]] && [[ $PAD != "TABLET Pen Tablet Pad pad" ]];then
-		notify-send "💀 Pad not supported"
-		exit 1
-	fi
-	app=$(ls profiles | grep .dmwa | sed 's/.dmwa//')   
-	launcher_app=$(echo "$app" | dmenu -i -p "Application profiles: ")
-	echo $launcher_app
-	$PROFILE_DIR/$launcher_app.dmwa "$PAD"
+# Funzione per impostare la modalità della tavoletta
+set_mode() {
+    MODE=$(echo -e "absolute\nrelative" | wofi --dmenu --prompt "Select mode:")
+    case $MODE in
+        absolute) mode_value="absolute" ;;
+        relative) mode_value="relative" ;;
+        *) exit 1 ;;
+    esac
+
+    if [[ $WM == "hyprland" ]]; then
+        hyprctl keyword device:${PAD},mode,${mode_value}
+    elif [[ $WM == "sway" ]]; then
+        swaymsg input "${PAD}" event ${mode_value}
+    fi
 }
 
-Button_setting() {
-	nbut=$(xsetwacom -s get "$PAD" all | grep "Button" | wc -l)
-
-	for number in {1..$nbut}
-	do
-		buttons+="$number\n"
-	done
-	launcher_button=$(echo "$buttons" | dmenu -i -p "Button: ")
-	if [[ $launcher_button < "0" ]] || [[ $launcher_button > $nbut ]];then
-		notify-send "the value is not included"
-		exit -1
-	fi
-
-	if [[ $launcher_button > "3" ]]; then
-	    launcher_button=$(($launcher_button+$gap))
-	    Button_set $launcher_button
-	elif [[ $launcher_button < $nbut ]]; then
-    	    Button_set $launcher_button
-	fi
-
+# Menu principale con Wofi
+main_menu() {
+    CHOICE=$(echo -e "Rotate tablet\nMap to monitor\nSet mode" | wofi --dmenu --prompt "Select an action:")
+    case $CHOICE in
+        "Rotate tablet") rotate_tablet ;;
+        "Map to monitor") map_to_monitor ;;
+        "Set mode") set_mode ;;
+        *) exit 1 ;;
+    esac
 }
 
-Button_set(){
-	tmp=$(cat dmw_history)
-	if [[ $1 > $compensation ]]; then
-		nbut=$(($1-$gap))
-		launcher_but=$(echo "" | dmenu -i -p "Function $nbut: ")
-	else
-		launcher_but=$(echo "$tmp\n" | dmenu -i -p "Function $1: ")
-	fi
-	xsetwacom set "$PAD" Button $1 key $launcher_but
-	echo "$launcher_but" >> dmw_history
-}
-
-Info_tablet(){
-	notify-send " $PAD"
-
-}
-
-# launcher
-wacom="Button setting\nApplication profiles\nScreen Locking\nRotate Pad\nInfo\nManual\n"
-launcher_wacom=$(echo "$wacom" | dmenu -i -p "dmenuWacom")
-[[ "$launcher_wacom" = "" ]] && exit 1
-
-case $launcher_wacom in
-	"Button setting") Button_setting;;
-	"Application profiles") Application_profiles;;
-	"Screen Locking") ScreenLocking;;
-	"Rotate Pad") ScreenRotation;;
-	"Info") Info_tablet;;
-	"Manual") $TERM -e man dmenuWacom;;
-esac
-
+# Avvia il menu principale
+main_menu
