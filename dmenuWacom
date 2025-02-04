@@ -20,7 +20,7 @@ else
 fi
 
 if [[ $WM == "hyprland" ]]; then
-    PAD=$(hyprctl devices | awk '/Tablet/ {getline; print $2}')
+    PAD=$(hyprctl devices | awk '/Tablet at/ {getline; print $1}')
 elif [[ $WM == "sway" ]]; then
     PAD=$(swaymsg -t get_inputs | jq -r '.[] | select(.type=="tablet_tool") | .identifier' | head -n 1)
 fi
@@ -132,7 +132,7 @@ configure_keys() {
     notify-send "${SELECTED_KEY} key configured with action: ${ACTION}"
 }
 
-CHOICE=$(echo -e "Rotate tablet\nMap to monitor\nSet mode" | fuzzel --dmenu "Select an action:")
+CHOICE=$(echo -e "Rotate tablet\nMap to monitor\nSet mode\nConfigure keys" | fuzzel --dmenu "Select an action:")
 case $CHOICE in
     "Rotate tablet") rotate_tablet ;;
     "Map to monitor") map_to_monitor ;;
