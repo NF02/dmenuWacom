@@ -20,6 +20,8 @@ else
 fi
 
 PAD=$(libinput list-devices | grep -i 'Tablet' | awk -F 'Device:' '{print $2}' | head -n 1 | xargs)
+TABLET_KEYS=$(libinput list-devices | grep -i 'Tablet' | grep -i 'keyboard' | awk -F 'Device:' '{print $2}' | xargs)
+
 
 
 if [[ $1 == --version ]] || [[ $1 == -v ]] || [[ $1 == -VERSION ]]; then
@@ -95,6 +97,38 @@ set_mode() {
     fi
 }
 
+# Function to configure the tablet keys
+configure_keys() {
+    if [ -z "$KEYS" ]; then
+        echo "Nessun tasto configurabile trovato sulla tavoletta."
+        exit 1
+    fi
+
+    # List of customizable keys
+    KEY_CHOICES="Key1\nKey2\nKey3\nKey4\nKey5\nKey6\nKey7\nKey8"
+    SELECTED_KEY=$(echo -e "$KEY_CHOICES" | wofi --dmenu --prompt "Seleziona un tasto:")
+    if [ -z "$SELECTED_KEY" ]; then exit 1; fi
+
+    # Select the action to associate
+    ACTION=$(echo -e "Ctrl+Z\nCtrl+Y\nCtrl+S\nCtrl+C\nCtrl+V\nSuper+E\nCustom" | wofi --dmenu --prompt "Assegna un'azione:")
+    if [ -z "$ACTION" ]; then exit 1; fi
+
+    # Se l'utente seleziona "Custom", permette di inserire un comando personalizzato
+    if [[ "$ACTION" == "Custom" ]]; then
+        ACTION=$(wofi --dmenu --prompt "Inserisci comando personalizzato:")
+        if [ -z "$ACTION" ]; then exit 1; fi
+    fi
+
+    # Configure the key with `swaymsg` or `hyprctl`
+    if [[ $WM == "hyprland" ]]; then
+        hyprctl keyword device:${TABLET_KEYS},bind,${SELECTED_KEY},exec,${ACTION}
+    elif [[ $WM == "sway" ]]; then
+        swaymsg "bindsym ${SELECTED_KEY} exec ${ACTION}"
+    fi
+
+    echo "${SELECTED_KEY} key configured with action: ${ACTION}"
+}
+
 # Main menu with Wofi
 main_menu() {
     CHOICE=$(echo -e "Rotate tablet\nMap to monitor\nSet mode" | wofi --dmenu --prompt "Select an action:")
@@ -102,6 +136,7 @@ main_menu() {
         "Rotate tablet") rotate_tablet ;;
         "Map to monitor") map_to_monitor ;;
         "Set mode") set_mode ;;
+	"Configure keys") configure_keys ;;
         *) exit 1 ;;
     esac
 }
